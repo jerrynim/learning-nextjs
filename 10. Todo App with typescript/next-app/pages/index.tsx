@@ -1,10 +1,13 @@
 import React from "react";
 import { NextPage } from "next";
 import axios from "axios";
-
+import styled from "styled-components";
+const Container = styled.div`
+  width: 100%;
+`;
 const app: NextPage = () => {
   return (
-    <div>
+    <Container>
       <button
         onClick={() => axios.get("/api/todos").then(res => console.log(res))}
       >
@@ -23,7 +26,7 @@ const app: NextPage = () => {
       >
         add todo
       </button>
-    </div>
+    </Container>
   );
 };
 

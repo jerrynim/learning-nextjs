@@ -4,11 +4,6 @@ const MyApp = ({ Component, pageProps }: AppProps & AppInitialProps) => {
   return (
     <>
       <Component {...pageProps} />
-      <style jsx global>{`
-        body {
-          margin: 0;
-        }
-      `}</style>
     </>
   );
 };
