@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { TodoType } from "../types/todo";
+import BrushIcon from "../public/static/svg/brushIcon.svg";
 
 const Container = styled.div`
   width: 100%;
@@ -16,9 +17,12 @@ interface Iprops {
 const TodoList: React.FC<Iprops> = ({ todos }) => {
   return (
     <Container>
-      <h1>
-        남은TODO<span className="todo-num">{todos.length}</span>
-      </h1>
+      <div>
+        <h1>
+          남은TODO<span className="todo-num">{todos.length}</span>
+        </h1>
+        <BrushIcon />
+      </div>
     </Container>
   );
 };
