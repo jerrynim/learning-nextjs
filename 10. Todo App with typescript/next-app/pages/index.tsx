@@ -10,7 +10,12 @@ const Container = styled.div`
 const app: NextPage = () => {
   return (
     <Container>
-      <TodoList todos={[]} />
+      <TodoList
+        todos={[
+          { id: 1, content: "마트가서 장보기", color: "red", checked: false },
+          { id: 1, content: "마트가서 장보기", color: "navy", checked: false }
+        ]}
+      />
     </Container>
   );
 };

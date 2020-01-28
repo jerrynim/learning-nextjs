@@ -1,17 +1,26 @@
 import React from "react";
 import styled from "styled-components";
+import { color } from "../styles/color";
 
 const Container = styled.div`
   width: 100%;
   height: 52px;
-  border-bottom: 1px solid #e5e5e5;
-  padding: 0px 12px;
+  border-bottom: 1px solid ${color.gray};
   display: flex;
   align-items: center;
-  font-size: 21px;
+  h1 {
+    font-size: 21px;
+    font-weight: 400;
+    padding-left: 12px;
+    margin: 0;
+  }
 `;
 const Header: React.FC = () => {
-  return <Container>Jerrynim's TodoList</Container>;
+  return (
+    <Container>
+      <h1>Jerrynim's TodoList</h1>
+    </Container>
+  );
 };
 
 export default Header;
