@@ -13,7 +13,21 @@ const app: NextPage = () => {
       <TodoList
         todos={[
           { id: 1, content: "마트가서 장보기", color: "red", checked: false },
-          { id: 1, content: "마트가서 장보기", color: "navy", checked: false }
+          { id: 1, content: "마트가서 장보기", color: "navy", checked: false },
+          {
+            id: 1,
+            content: "마트가서 장보기",
+            color: "yellow",
+            checked: false
+          },
+          {
+            id: 1,
+            content: "마트가서 장보기",
+            color: "orange",
+            checked: false
+          },
+          { id: 1, content: "마트가서 장보기", color: "green", checked: false },
+          { id: 1, content: "마트가서 장보기", color: "blue", checked: false }
         ]}
       />
     </Container>
