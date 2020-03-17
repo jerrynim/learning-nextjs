@@ -2,8 +2,26 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
+class ClassApp extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      name: ""
+    };
+    this.setName = this.setName.bind(this);
+  }
+
+  setName(value) {
+    this.setState({ name: value });
+  }
+
+  render() {
+    return <div />;
+  }
+}
+
 const App = () => {
-  const [name, setName] = useState();
+  const [name, setName] = useState("");
   const router = useRouter();
   return (
     <div>
@@ -14,7 +32,6 @@ const App = () => {
       <br />
       <h3>이름</h3>
       <input value={name} onChange={e => setName(e.target.value)} />
-
       <br />
       <br />
 

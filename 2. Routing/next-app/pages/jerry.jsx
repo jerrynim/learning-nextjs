@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-const read = () => (
+const jerry = () => (
   <div>
     <h1>Hello jerry!!</h1>
     <Link href="/">
@@ -8,4 +8,4 @@ const read = () => (
     </Link>
   </div>
 );
-export default read;
+export default jerry;
