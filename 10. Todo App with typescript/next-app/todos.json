@@ -1,4 +1,1 @@
-[
-  { "id": 1, "content": "마트가서 장보기", "color": "red", "checked": false },
-  { "id": 1, "content": "마트가서 장보기", "color": "navy", "checked": false }
-]
+[{"id":1,"content":"마트가서 장보기","color":"red","checked":true},{"id":2,"color":"red","content":"밥사기!","checked":true}]

@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import { color } from "../styles/color";
+import { pallete } from "../styles/pallete";
 
 const Container = styled.div`
   width: 100%;
   height: 52px;
-  border-bottom: 1px solid ${color.gray};
+  border-bottom: 1px solid ${pallete.gray};
   display: flex;
   align-items: center;
   h1 {
