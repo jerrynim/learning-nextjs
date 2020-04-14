@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 
-const App = ({ repos, user }) => {
+const App = () => {
   const [username, setUsername] = useState("");
   return (
     <div>

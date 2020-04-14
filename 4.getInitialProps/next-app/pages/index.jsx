@@ -1,16 +1,31 @@
-const App = ({ movies }) => (
-  <div>
-    Hello Next.js!!
-    {movies.map(movie => (
-      <div>{movie.title}</div>
-    ))}
-  </div>
-);
+import Link from "next/link";
 import fetch from "isomorphic-unfetch";
 
-App.getInitialProps = async () => {
-  const data = await fetch("https://yts.tl/api/v2/list_movies.json");
-  const json = await data.json();
-  return { movies: json.data.movies };
+const Index = ({ movies }) => (
+  <div>
+    Hello Movies!!
+    {/* {movies.map(movie => (
+      <div>{movie.title}</div>
+    ))} */}
+    <Link href="hello">
+      <a>hello</a>
+    </Link>
+  </div>
+);
+
+Index.getInitialProps = async function() {
+  try {
+    const res = await fetch("https://api.tvmaze.com/search/shows?q=batman");
+    console.log(res);
+    const data = await res.json();
+    console.log(`Show data fetched. Count: ${data.length}`);
+    return {
+      movies: data.data.movies
+    };
+  } catch (e) {
+    console.log(e);
+  }
+  return {};
 };
-export default App;
+
+export default Index;

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import BrushIcon from "../public/static/svg/brushIcon.svg";
+import BrushIcon from "../public/static/svg/brush.svg";
 import { pallete } from "../styles/pallete";
 import axios, { AxiosResponse } from "axios";
 import lodash from "lodash/flatten";
