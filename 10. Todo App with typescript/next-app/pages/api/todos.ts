@@ -9,15 +9,15 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
         fs.readFile("todos.json", (err, data) => {
           if (err) {
             console.log(err);
-            throw Error("err");
+            res.status(500).send("에러가 발생했습니다.");
           } else {
             const todos = JSON.parse(data.toString());
-            return res.end(JSON.stringify(todos));
+            res.send(JSON.stringify(todos));
           }
         });
       } else {
-        console.log("no data");
-        res.status(204).json("데이터가 없습니다.");
+        console.log("데이터가 없습니다.");
+        res.status(404).json("데이터가 없습니다.");
       }
     });
   }

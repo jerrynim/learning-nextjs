@@ -6,6 +6,7 @@ import axios, { AxiosResponse } from "axios";
 import lodash from "lodash/flatten";
 import fp from "lodash/fp/flatten";
 import { TodoType } from "../types/todo";
+import { useRouter } from "next/dist/client/router";
 
 const Container = styled.div`
   padding: 16px;
@@ -66,6 +67,8 @@ const AddTodo: React.FC = () => {
   const [content, setContent] = useState("");
   const [selectedColor, setSelectedColor] = useState<TodoType["color"]>();
 
+  const router = useRouter();
+
   //* 투두 추가하기 Params type
   interface AddToDoParams {
     content: string;
@@ -86,6 +89,8 @@ const AddTodo: React.FC = () => {
       await addTodoAPI({ content, color: selectedColor });
 
       console.log("추가했습니다.");
+
+      router.push("/");
     } catch (e) {
       console.log(e.response.data.message);
     }

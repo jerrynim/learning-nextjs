@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import styled from "styled-components";
 import CountBy from "lodash/Countby";
 import toPairs from "lodash/toPairs";
@@ -8,8 +8,9 @@ import { pallete } from "../styles/pallete";
 import axios, { AxiosResponse } from "axios";
 import { Dictionary } from "lodash";
 import todo from "../pages/api/todo";
-import CheckMarkIcon from "../public/static/svg/check-mark.svg";
-import TrashCanIcon from "../public/static/svg/trash-can.svg";
+import CheckMarkIcon from "../public/static/svg/check_mark.svg";
+import TrashCanIcon from "../public/static/svg/trash_can.svg";
+import { useRouter } from "next/dist/client/router";
 
 const Container = styled.div`
   width: 100%;
@@ -58,6 +59,8 @@ const Container = styled.div`
   }
 
   .todo-list {
+    height: calc(100vh - 168px);
+    overflow-y: scroll;
     li {
       display: flex;
       justify-content: space-between;
@@ -83,6 +86,12 @@ const Container = styled.div`
         .todo-content {
           margin-left: 12px;
           font-size: 16px;
+          /** 많은양의 텍스트를 처리하는 방법 1 */
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
         }
       }
 
@@ -120,6 +129,9 @@ interface Iprops {
 }
 
 const TodoList: React.FC<Iprops> = ({ todos }) => {
+  const router = useRouter();
+  const [localTodos, setLocalTodos] = useState<TodoType[]>();
+
   //* 색깔 객체 구하기 1
   const colors = useMemo(() => {
     let red = 0;
@@ -212,6 +224,20 @@ const TodoList: React.FC<Iprops> = ({ todos }) => {
     try {
       const { data } = await checkTodoAPI(id);
       console.log(data);
+      //* 체크를 적용하는 방법 1(데이터 다시 받기)
+      // router.reload();
+
+      //* 체크를 적용하는 방법 2(데이터 다시 받기)
+      router.push("/");
+
+      //* 체크를 적용하는 방법 3(data를 local로 저장하여 사용하기)
+      const newTodos = todos.map((todo) => {
+        if (todo.id === id) {
+          return { ...todo, checked: !todo.checked };
+        }
+        return todo;
+      });
+      setLocalTodos(newTodos);
     } catch (e) {
       console.log(e.response.data.message);
     }
@@ -221,6 +247,8 @@ const TodoList: React.FC<Iprops> = ({ todos }) => {
   const deleteTodo = async (id: number) => {
     try {
       await deleteTodoAPI(id);
+      router.push("/");
+
       console.log("삭제했습니다.");
     } catch (e) {
       console.log(e.response.data.message);

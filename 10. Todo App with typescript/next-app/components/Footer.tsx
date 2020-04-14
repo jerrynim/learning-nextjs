@@ -25,6 +25,7 @@ const Container = styled.footer`
     padding: 0;
     line-height: 0;
     outline: none;
+    padding: 0 0 4px 3px;
   }
 `;
 

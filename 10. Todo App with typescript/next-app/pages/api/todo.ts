@@ -7,7 +7,8 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
     const { id } = req.body;
     if (!id) {
       //* id 가 없다면
-      res.status(400).send({ status: 400, message: "id 가 없습니다." });
+      res.status(400).send("id 가 없습니다.");
+      //! 마지막이 아니니 리턴
       return;
     }
     try {
@@ -16,8 +17,7 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
           //* 파일이 존재한다면
           fs.readFile("todos.json", (err, data) => {
             if (err) {
-              console.log(err);
-              throw Error(err.message);
+              throw new Error(err.message);
             } else {
               const todos: TodoType[] = JSON.parse(data.toString());
               const updatedTodo = todos.map((todo) => {
@@ -26,10 +26,13 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
                 }
                 return todo;
               });
-              fs.writeFile("todos.json", JSON.stringify(updatedTodo), () =>
-                console.log("hi")
-              );
-              return res.end(JSON.stringify(updatedTodo));
+              fs.writeFile("todos.json", JSON.stringify(updatedTodo), (err) => {
+                if (err) {
+                  throw new Error(err.message);
+                }
+              });
+              res.send(JSON.stringify(updatedTodo));
+              return;
             }
           });
         } else {
@@ -38,7 +41,8 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
         }
       });
     } catch (e) {
-      console.warn(e.message);
+      console.log(e);
+      res.status(500).send(e);
     }
   }
 
@@ -67,7 +71,7 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
             };
             todos.push(newToDo);
             fs.writeFile("todos.json", JSON.stringify(todos), () =>
-              console.log("hi")
+              console.log("add")
             );
             return res.end(JSON.stringify(todos));
           }
@@ -79,9 +83,11 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
           content,
           checked: false,
         };
-        fs.writeFile("todos.json", JSON.stringify([newToDo]), () =>
-          console.log("Hi")
-        );
+        fs.writeFile("todos.json", JSON.stringify([newToDo]), (err) => {
+          if (err) {
+            console.log(err);
+          }
+        });
         res.status(200).json([newToDo]);
       }
     });
