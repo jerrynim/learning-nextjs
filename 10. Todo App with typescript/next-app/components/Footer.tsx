@@ -29,9 +29,13 @@ const Container = styled.footer`
   }
 `;
 
-const Footer: React.FC = () => {
+interface IProps {
+  pathname: string;
+}
+
+const Footer: React.FC<IProps> = ({ pathname }) => {
   const router = useRouter();
-  const isHome = router?.pathname === "/";
+  const isHome = pathname === "/";
   return (
     <Container>
       <button

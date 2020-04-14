@@ -3,7 +3,7 @@ import styled from "styled-components";
 import CountBy from "lodash/Countby";
 import toPairs from "lodash/toPairs";
 import { TodoType } from "../types/todo";
-import BrushIcon from "../public/static/svg/brushIcon.svg";
+import BrushIcon from "../public/static/svg/brush.svg";
 import { pallete } from "../styles/pallete";
 import axios, { AxiosResponse } from "axios";
 import { Dictionary } from "lodash";
@@ -129,8 +129,7 @@ interface Iprops {
 }
 
 const TodoList: React.FC<Iprops> = ({ todos }) => {
-  const router = useRouter();
-  const [localTodos, setLocalTodos] = useState<TodoType[]>();
+  const [localTodos, setLocalTodos] = useState<TodoType[]>(todos);
 
   //* 색깔 객체 구하기 1
   const colors = useMemo(() => {
@@ -140,7 +139,7 @@ const TodoList: React.FC<Iprops> = ({ todos }) => {
     let green = 0;
     let blue = 0;
     let navy = 0;
-    todos.forEach((todo) => {
+    localTodos.forEach((todo) => {
       switch (todo.color) {
         case "red":
           red += 1;
@@ -173,7 +172,7 @@ const TodoList: React.FC<Iprops> = ({ todos }) => {
       blue,
       navy,
     };
-  }, [todos]);
+  }, [localTodos]);
 
   //* 색깔 객체 구하기 2
   //? useMemo의 과도한 사용을 설명하자
@@ -222,16 +221,15 @@ const TodoList: React.FC<Iprops> = ({ todos }) => {
   //* 투두 체크하기
   const checkTodo = async (id: number) => {
     try {
-      const { data } = await checkTodoAPI(id);
-      console.log(data);
+      await checkTodoAPI(id);
       //* 체크를 적용하는 방법 1(데이터 다시 받기)
       // router.reload();
 
       //* 체크를 적용하는 방법 2(데이터 다시 받기)
-      router.push("/");
+      // router.push("/");
 
       //* 체크를 적용하는 방법 3(data를 local로 저장하여 사용하기)
-      const newTodos = todos.map((todo) => {
+      const newTodos = localTodos.map((todo) => {
         if (todo.id === id) {
           return { ...todo, checked: !todo.checked };
         }
@@ -247,8 +245,11 @@ const TodoList: React.FC<Iprops> = ({ todos }) => {
   const deleteTodo = async (id: number) => {
     try {
       await deleteTodoAPI(id);
-      router.push("/");
+      // router.push("/");
 
+      //* 체크를 적용하는 방법 3(data를 local로 저장하여 사용하기)
+      const newTodos = localTodos.filter((todo) => todo.id !== id);
+      setLocalTodos(newTodos);
       console.log("삭제했습니다.");
     } catch (e) {
       console.log(e.response.data.message);
@@ -259,7 +260,7 @@ const TodoList: React.FC<Iprops> = ({ todos }) => {
     <Container>
       <div className="todo-list-header">
         <p className="todo-list-last-todo">
-          남은TODO<span>{todos.length}개</span>
+          남은TODO<span>{localTodos.length}개</span>
         </p>
         <BrushIcon className="brush-icon" />
         <div className="todo-list-header-colors">
@@ -276,7 +277,7 @@ const TodoList: React.FC<Iprops> = ({ todos }) => {
         </div>
       </div>
       <ul className="todo-list">
-        {todos.map((todo) => (
+        {localTodos.map((todo) => (
           <li key={todo.id}>
             <div className="todo-left-side">
               <div className={`todo-color-block ${getTodoColor(todo.color)}`} />
@@ -289,23 +290,28 @@ const TodoList: React.FC<Iprops> = ({ todos }) => {
               </p>
             </div>
             <div className="todo-right-side">
-              {todo.checked ? (
-                <>
-                  <TrashCanIcon
-                    className="svg-red"
-                    onClick={() => deleteTodo(todo.id)}
-                  />
-                  <CheckMarkIcon
-                    className="svg-green"
+              {
+                /** 삼항 연산자를 이용한 방법
+                 * 하지만 가독성이 안 좋아 추천하지 않음
+                 */
+                todo.checked ? (
+                  <>
+                    <TrashCanIcon
+                      className="svg-red"
+                      onClick={() => deleteTodo(todo.id)}
+                    />
+                    <CheckMarkIcon
+                      className="svg-green"
+                      onClick={() => checkTodo(todo.id)}
+                    />
+                  </>
+                ) : (
+                  <button
+                    className="todo-button"
                     onClick={() => checkTodo(todo.id)}
                   />
-                </>
-              ) : (
-                <button
-                  className="todo-button"
-                  onClick={() => checkTodo(todo.id)}
-                />
-              )}
+                )
+              }
             </div>
           </li>
         ))}

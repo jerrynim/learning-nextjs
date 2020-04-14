@@ -5,20 +5,12 @@ import TodoList from "../components/TodoList";
 import axios from "axios";
 import { TodoType } from "../types/todo";
 
-const Container = styled.div`
-  width: 100%;
-`;
-
 interface IProps {
   todos: TodoType[];
 }
 
 const app: NextPage<IProps> = ({ todos }) => {
-  return (
-    <Container>
-      <TodoList todos={todos} />
-    </Container>
-  );
+  return <TodoList todos={todos} />;
 };
 
 app.getInitialProps = async () => {

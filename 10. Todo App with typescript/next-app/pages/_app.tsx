@@ -3,19 +3,19 @@ import Header from "../components/Header";
 import GlobalStyle from "../styles/GlobalStyle";
 import Footer from "../components/Footer";
 
-const MyApp = ({ Component, pageProps }: AppProps & AppInitialProps) => {
+const MyApp = ({
+  Component,
+  router,
+  pageProps,
+}: AppProps & AppInitialProps) => {
   return (
     <>
       <GlobalStyle />
       <Header />
       <Component {...pageProps} />
-      <Footer />
+      <Footer pathname={router.pathname} />
     </>
   );
 };
 
-MyApp.getInitialProps = async (appContext: AppContext) => {
-  const appProps = await App.getInitialProps(appContext);
-  return { ...appProps };
-};
 export default MyApp;
