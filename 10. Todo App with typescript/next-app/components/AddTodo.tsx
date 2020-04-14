@@ -2,11 +2,8 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import BrushIcon from "../public/static/svg/brush.svg";
 import { pallete } from "../styles/pallete";
-import axios, { AxiosResponse } from "axios";
-import lodash from "lodash/flatten";
-import fp from "lodash/fp/flatten";
 import { TodoType } from "../types/todo";
-import { useRouter } from "next/dist/client/router";
+import useAddTodo from "../hooks/useAddTodo";
 
 const Container = styled.div`
   padding: 16px;
@@ -67,40 +64,16 @@ const AddTodo: React.FC = () => {
   const [content, setContent] = useState("");
   const [selectedColor, setSelectedColor] = useState<TodoType["color"]>();
 
-  const router = useRouter();
-
-  //* 투두 추가하기 Params type
-  interface AddToDoParams {
-    content: string;
-    color: TodoType["color"];
-  }
-  //* 투두 추가하기 API
-  const addTodoAPI = (
-    data: AddToDoParams
-  ): Promise<AxiosResponse<TodoType[]>> => axios.put("/api/todo", data);
-
-  //*투두 추가하기
-  const addTodo = async () => {
-    try {
-      if (content === "" || !selectedColor) {
-        console.log("항목을 입력해주세요.");
-        return;
-      }
-      await addTodoAPI({ content, color: selectedColor });
-
-      console.log("추가했습니다.");
-
-      router.push("/");
-    } catch (e) {
-      console.log(e.response.data.message);
-    }
-  };
+  const { addTodo } = useAddTodo();
 
   return (
     <Container>
       <div className="add-todo-header">
         <h1>Add ToDo</h1>
-        <button className="add-todo-submit-button" onClick={() => addTodo()}>
+        <button
+          className="add-todo-submit-button"
+          onClick={() => addTodo({ content, selectedColor })}
+        >
           추가하기
         </button>
       </div>
